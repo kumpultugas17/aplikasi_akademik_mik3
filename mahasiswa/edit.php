@@ -8,12 +8,14 @@ if (isset($_GET['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Apps Akademik - Tambah</title>
    <link rel="stylesheet" href="../assets_bootstrap/css/bootstrap.min.css">
 </head>
+
 <body>
    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow">
       <div class="container-fluid">
@@ -45,8 +47,8 @@ if (isset($_GET['id'])) {
             <div class="alert alert-primary py-2">TAMBAH MAHASISWA</div>
             <div class="card">
                <div class="card-body">
-                  <form action="act_tambah.php" method="post">
-                     <input type="hidden" value="<?= $id ?>">
+                  <form action="act_edit.php" method="post">
+                     <input type="hidden" name="id" value="<?= $id ?>">
                      <div class="row mb-3">
                         <label for="nim" class="col-sm-2 col-form-label">NIM</label>
                         <div class="col-sm-10">

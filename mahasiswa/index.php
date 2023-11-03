@@ -67,7 +67,7 @@
                               <td><?= $data['jurusan'] ?></td>
                               <td>
                                  <a href="edit.php?id=<?= $data['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                 <button class="btn btn-sm btn-danger">Hapus</button>
+                                 <a href="delete.php?id=<?= $data['id'] ?>" class="btn btn-sm btn-danger">Hapus</a>
                               </td>
                            </tr>
                         <?php
