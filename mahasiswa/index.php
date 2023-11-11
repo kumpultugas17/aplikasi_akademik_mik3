@@ -24,7 +24,7 @@
                   <a class="nav-link" href="index.php">Mahasiswa</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" href="#">Nilai</a>
+                  <a class="nav-link" href="../nilai/index.php">Nilai</a>
                </li>
             </ul>
             <div class="d-flex">
