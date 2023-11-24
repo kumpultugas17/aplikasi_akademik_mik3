@@ -40,10 +40,12 @@
             <div class="alert alert-primary py-2">DATA MAHASISWA</div>
             <div class="card">
                <div class="card-body">
+
                   <!-- Button trigger modal -->
                   <button type="button" class="btn btn-primary btn-sm float-end mb-3" data-bs-toggle="modal" data-bs-target="#tambah">
                      Tambah
                   </button>
+
                   <table class="table table-bordered table-striped">
                      <thead>
                         <tr>
@@ -54,6 +56,7 @@
                            <th>NILAI TUGAS</th>
                            <th>NILAI UTS</th>
                            <th>NILAI UAS</th>
+                           <th>NILAI AKHIR</th>
                            <th></th>
                         </tr>
                      </thead>
@@ -63,6 +66,7 @@
                         $no = 1;
                         $query = $conn->query("SELECT * FROM nilai n INNER JOIN mhs m ON m.id = n.mhs_id ORDER BY id_nilai DESC");
                         foreach ($query as $data) :
+                           $nilai_akhir = ($data['nilai_tugas'] * 0.2) + ($data['nilai_uts'] * 0.3) + ($data['nilai_uas'] * 0.5);
                         ?>
                            <tr>
                               <td><?= $no++ ?></td>
@@ -72,11 +76,62 @@
                               <td><?= $data['nilai_tugas'] ?></td>
                               <td><?= $data['nilai_uts'] ?></td>
                               <td><?= $data['nilai_uas'] ?></td>
+                              <td><?= $nilai_akhir ?></td>
                               <td>
-                                 <a href="edit.php?id=<?= $data['id_nilai'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                 <a href="delete.php?id=<?= $data['id_nilai'] ?>" class="btn btn-sm btn-danger">Hapus</a>
+                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $data['id_nilai'] ?>">Edit</button>
+                                 <a href="delete.php?id=<?= $data['id_nilai'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin data akan dihapus?')">Hapus</a>
                               </td>
                            </tr>
+
+                           <!-- Modal Edit -->
+                           <div class="modal fade" id="edit<?= $data['id_nilai'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                 <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h1 class="modal-title fs-5" id="exampleModalLabel">EDIT DATA NILAI</h1>
+                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="act_edit.php" method="post">
+                                       <input type="hidden" name="id_nilai" value="<?= $data['id_nilai'] ?>">
+                                       <div class="modal-body">
+                                          <div class="mb-2">
+                                             <label for="nama_mhs" class="form-label">Nama Mahasiswa</label>
+                                             <select name="nama_mhs" id="nama_mhs" class="form-select">
+                                                <option disabled selected>Pilih Mahasiswa</option>
+                                                <?php
+                                                $query = $conn->query("SELECT * FROM mhs");
+                                                foreach ($query as $mhs) :
+                                                ?>
+                                                   <option value="<?= $mhs['id'] ?>" <?= $mhs['id'] == $data['mhs_id'] ? 'selected' : '' ?>><?= $mhs['nama'] ?></option>
+                                                <?php endforeach ?>
+                                             </select>
+                                          </div>
+                                          <div class="mb-2">
+                                             <label for="mata_kuliah" class="form-label">Mata Kuliah</label>
+                                             <input type="text" id="mata_kuliah" name="mata_kuliah" class="form-control" value="<?= $data['mata_kuliah'] ?>">
+                                          </div>
+                                          <div class="mb-2">
+                                             <label for="nilai_tugas" class="form-label">Nilai Tugas</label>
+                                             <input type="number" id="nilai_tugas" name="nilai_tugas" class="form-control" value="<?= $data['nilai_tugas'] ?>">
+                                          </div>
+                                          <div class="mb-2">
+                                             <label for="nilai_uts" class="form-label">Nilai UTS</label>
+                                             <input type="number" id="nilai_uts" name="nilai_uts" class="form-control" value="<?= $data['nilai_uts'] ?>">
+                                          </div>
+                                          <div class="mb-2">
+                                             <label for="nilai_uas" class="form-label">Nilai UAS</label>
+                                             <input type="number" id="nilai_uas" name="nilai_uas" class="form-control" value="<?= $data['nilai_uas'] ?>">
+                                          </div>
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
+                                       </div>
+                                    </form>
+                                 </div>
+                              </div>
+                           </div>
+
                         <?php
                         endforeach
                         ?>
@@ -92,8 +147,6 @@
 </body>
 
 </html>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
